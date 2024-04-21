@@ -2,8 +2,12 @@
 interface Props {
 	title: string;
 }
-
+import "@radix-ui/themes/styles.css";
 const { title } = Astro.props;
+import { Theme, Card, Container, Flex, Button, Box, Link } from "@radix-ui/themes";
+import { Footer } from "../components/Footer";
+import SignInButton from "../components/SignInButton.astro";
+
 ---
 
 <!doctype html>
@@ -16,36 +20,44 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
-		<slot />
+	<body style={{ padding: 0, margin: 0 }}>
+		<Theme
+          accentColor="iris"
+          panelBackground="solid"
+          style={{ backgroundColor: "var(--gray-1)" }}
+        >
+          <Container style={{ backgroundColor: "var(--gray-1)" }}>
+            <Flex direction="column" gap="5" p="5" height="100vh">
+              <Box asChild flexGrow="1">
+                <Card size="4">
+                  <Flex direction="column" height="100%">
+                    <Flex justify="between">
+                      <header>
+                        <Flex gap="4">
+                          <Button asChild variant="soft">
+                            <Link href="/">Home</Link>
+                          </Button>
+
+                          <Button asChild variant="soft">
+							<Link href="/account">Account</Link>
+                          </Button>
+                        </Flex>
+                        <SignInButton large/>
+
+					</header>
+                    </Flex>
+
+                    <Flex flexGrow="1" align="center" justify="center">
+                      <main>	
+						<slot />
+				      </main>
+                    </Flex>
+                  </Flex>
+                </Card>
+              </Box>
+			<Footer/>
+            </Flex>
+          </Container>
+        </Theme>
 	</body>
 </html>
-<style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-</style>

@@ -1,0 +1,24 @@
+---
+import {getUser } from "../authkit-astro/session";
+import { getSignInUrl } from "../authkit-astro/auth";
+import { Button, Flex, Link } from "@radix-ui/themes";
+const authorizationUrl = await getSignInUrl();
+const { user } = await getUser({ensureSignedIn: false, context: Astro});
+interface Props {
+	large: boolean;
+}
+const { large } = Astro.props;
+---
+
+
+{ user ? 
+<Flex gap="3">
+          <Button asChild size={large ? "3" : "2"}>
+            <Link href="/auth/signout">Sign Out</Link>
+          </Button>
+        </Flex> 
+        : <Button asChild size={large ? "3" : "2"}>
+            <Link href={authorizationUrl}>Sign In {large && "with AuthKit"}</Link>
+        </Button> 
+}
+
