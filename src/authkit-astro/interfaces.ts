@@ -1,4 +1,4 @@
-import { User } from '@workos-inc/node';
+import type { User } from "@workos-inc/node";
 
 export interface HandleAuthOptions {
   returnPathname?: string;
@@ -37,6 +37,6 @@ export interface AccessToken {
 }
 
 export interface GetAuthURLOptions {
-  screenHint?: 'sign-up' | 'sign-in';
+  screenHint?: "sign-up" | "sign-in";
   returnPathname?: string;
 }
