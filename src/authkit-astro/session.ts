@@ -118,23 +118,13 @@ async function updateSession(
   }
 }
 
-async function getUser(options?: {
-  ensureSignedIn: false;
-  context: APIContext;
-}): Promise<UserInfo | NoUserInfo>;
-
-async function getUser(options: {
-  ensureSignedIn: true;
-  context: APIContext;
-}): Promise<UserInfo>;
-
 async function getUser({
   ensureSignedIn,
   context,
 }: {
   ensureSignedIn: boolean;
   context: APIContext;
-}) {
+}): Promise<UserInfo | NoUserInfo> {
   const hasMiddleware = Boolean(
     context.request.headers.get(middlewareHeaderName)
   );
