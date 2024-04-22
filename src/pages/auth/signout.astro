@@ -3,16 +3,16 @@ import { cookieName, cookieOptions } from "../../authkit-astro/cookie";
 import { getUser } from "../../authkit-astro/session";
 import { workos } from "../../authkit-astro/workos";
 
+const session = await getUser({
+  ensureSignedIn: false,
+  context: Astro,
+});
+Astro.cookies.delete(cookieName, cookieOptions);
 
-  const session = await getUser({
-    ensureSignedIn: false,
-    context: Astro,
-  });
-  Astro.cookies.delete(cookieName, cookieOptions);
-
-  if (session.sessionId) {
-    return Astro.redirect(workos.userManagement.getLogoutUrl({ sessionId:session.sessionId }));
-  }
-  return Astro.redirect("/");
-
+if (session.sessionId) {
+  return Astro.redirect(
+    workos.userManagement.getLogoutUrl({ sessionId: session.sessionId })
+  );
+}
+return Astro.redirect("/");
 ---

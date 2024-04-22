@@ -1,18 +1,18 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 import SignInButton from "../components/SignInButton.astro";
-
-import { getSignInUrl, getSignUpUrl } from '../authkit-astro/auth';
-import { getUser } from '../authkit-astro/session';
-const url = await getSignUpUrl();
-const { user } = await getUser({ensureSignedIn: false, context: Astro});
 import { Heading, Text, Flex, Button } from "@radix-ui/themes";
+//@ts-ignore
+const { session } = Astro.locals;
+console.log(Astro.locals);
+const user = session ? session.user : false;
 ---
 
 <Layout title="Welcome to Astro.">
-	<Flex direction="column" align="center" gap="2">
-      {user ? (
-		<>
+  <Flex direction="column" align="center" gap="2">
+    {
+      user ? (
+        <>
           <Heading size="8">
             Welcome back{user?.firstName && `, ${user?.firstName}`}
           </Heading>
@@ -25,17 +25,16 @@ import { Heading, Text, Flex, Button } from "@radix-ui/themes";
             </Button>
             <SignInButton large />
           </Flex>
-		</>
+        </>
       ) : (
-		<>
+        <>
           <Heading size="8">AuthKit authentication example</Heading>
           <Text size="5" color="gray" mb="4">
             Sign in to view your account details
           </Text>
-		<SignInButton large></SignInButton>
-	</>
-      )}
-    </Flex>
+          <SignInButton large />
+        </>
+      )
+    }
+  </Flex>
 </Layout>
-
-../components/SignInButton.jsx

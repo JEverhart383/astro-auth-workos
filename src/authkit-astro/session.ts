@@ -3,19 +3,13 @@ import { sealData, unsealData } from "iron-session";
 import { cookieName, cookieOptions } from "./cookie.ts";
 import { workos } from "./workos.ts";
 import { WORKOS_CLIENT_ID, WORKOS_COOKIE_PASSWORD } from "./env-variables.ts";
-// import { getAuthorizationUrl } from "./get-authorization-url.js";
 import type {
   AccessToken,
   NoUserInfo,
   Session,
   UserInfo,
 } from "./interfaces.ts";
-import type {
-  APIContext,
-  AstroCookies,
-  AstroGlobal,
-  MiddlewareNext,
-} from "astro";
+import type { APIContext, AstroCookies, MiddlewareNext } from "astro";
 import { getAuthorizationUrl } from "./get-authorization-url.ts";
 
 const sessionHeaderName = "x-workos-session";
@@ -37,15 +31,12 @@ async function updateSession(
   const session = await getSessionFromCookie(context.cookies);
 
   const newRequestHeaders = new Headers(context.request.headers);
-
   // We store the current request url in a custom header, so we can always have access to it
   // This is because on hard navigations we don't have access to `next-url` but need to get the current
   // `pathname` to be able to return the users where they came from before sign-in
   newRequestHeaders.set("x-url", context.request.url);
-
   // Record that the request was routed through the middleware so we can check later for DX purposes
   newRequestHeaders.set(middlewareHeaderName, "true");
-
   newRequestHeaders.delete(sessionHeaderName);
 
   // If no session, just continue
@@ -55,7 +46,7 @@ async function updateSession(
       context.request.headers.set(key, value);
     });
 
-    const response = await next();
+    const response = next();
     return response;
   }
 
@@ -73,7 +64,8 @@ async function updateSession(
     newRequestHeaders.forEach((value, key) => {
       context.request.headers.set(key, value);
     });
-    const response = await next();
+    context.locals.session = session;
+    const response = next();
     return response;
   }
 
@@ -105,7 +97,8 @@ async function updateSession(
       context.request.headers.set(key, value);
     });
     context.cookies.set(cookieName, encryptedSession, cookieOptions);
-    const response = await next();
+    context.locals.session = session;
+    const response = next();
     return response;
   } catch (e) {
     console.warn("Failed to refresh", e);

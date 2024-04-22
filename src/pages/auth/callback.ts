@@ -4,12 +4,18 @@ import { encryptSession } from "../../authkit-astro/session.ts";
 import { cookieName, cookieOptions } from "../../authkit-astro/cookie.ts";
 import type { APIContext } from "astro";
 
-export async function GET({ params, request, redirect, cookies }: APIContext) {
-  const url = new URL(request.url);
+export async function GET({
+  params,
+  request,
+  redirect,
+  cookies,
+  url,
+}: APIContext) {
   const searchParams = url.searchParams;
   const code = searchParams.get("code");
   const state = searchParams.get("state");
   const returnPathname = state ? JSON.parse(atob(state)).returnPathname : null;
+
   if (code) {
     const { accessToken, refreshToken, user, impersonator } =
       await workos.userManagement.authenticateWithCode({
