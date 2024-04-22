@@ -64,6 +64,7 @@ async function updateSession(
     newRequestHeaders.forEach((value, key) => {
       context.request.headers.set(key, value);
     });
+    //@ts-ignore
     context.locals.session = session;
     const response = next();
     return response;
@@ -97,6 +98,7 @@ async function updateSession(
       context.request.headers.set(key, value);
     });
     context.cookies.set(cookieName, encryptedSession, cookieOptions);
+    //@ts-ignore
     context.locals.session = session;
     const response = next();
     return response;
