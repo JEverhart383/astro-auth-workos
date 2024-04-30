@@ -1,0 +1,31 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Flex, Heading, Text, Box, TextField } from "@radix-ui/themes";
+import MessageForm from "../components/MessageForm";
+//@ts-ignore
+const { session } = Astro.locals;
+if (!session.user) {
+  return Astro.redirect("/");
+}
+
+const { user, role } = session;
+
+const userFields = [
+  ["First name", user.firstName],
+  ["Last name", user.lastName],
+  ["Email", user.email],
+  role ? ["Role", role] : [],
+  ["Id", user.id],
+].filter((arr) => arr.length > 0);
+---
+
+<Layout title="Your Account">
+  <Flex direction="column" gap="2" mb="7">
+    <Heading size="8" align="center"> Inbox </Heading>
+    <Text size="5" align="center" color="gray">
+      Below are messages associated with your user
+    </Text>
+  </Flex>
+
+  <MessageForm client:idle />
+</Layout>

@@ -46,7 +46,7 @@ async function updateSession(
       context.request.headers.set(key, value);
     });
 
-    const response = next();
+    const response = next;
     return response;
   }
 
@@ -66,7 +66,7 @@ async function updateSession(
     });
     //@ts-ignore
     context.locals.session = session;
-    const response = next();
+    const response = next;
     return response;
   }
 
@@ -100,7 +100,7 @@ async function updateSession(
     context.cookies.set(cookieName, encryptedSession, cookieOptions);
     //@ts-ignore
     context.locals.session = session;
-    const response = next();
+    const response = next;
     return response;
   } catch (e) {
     console.warn("Failed to refresh", e);
@@ -108,7 +108,7 @@ async function updateSession(
       context.request.headers.set(key, value);
     });
     context.cookies.delete(cookieName);
-    const response = await next();
+    const response = await next;
     return response;
   }
 }
