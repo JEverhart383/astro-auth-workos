@@ -36,7 +36,7 @@ import SignInButton from "../components/SignInButton.astro";
       <Container style={{ backgroundColor: "var(--gray-1)" }}>
         <Flex direction="column" gap="5" p="5" height="100vh">
           <Box asChild flexGrow="1">
-            <Card size="4">
+            <Card size="5">
               <Flex direction="column" height="100%">
                 <Flex justify="between">
                   <header>
@@ -57,7 +57,7 @@ import SignInButton from "../components/SignInButton.astro";
                 </Flex>
 
                 <Flex flexGrow="1" align="center" justify="center">
-                  <main>
+                  <main style={{ minWidth: "300px" }}>
                     <slot />
                   </main>
                 </Flex>
@@ -70,3 +70,9 @@ import SignInButton from "../components/SignInButton.astro";
     </Theme>
   </body>
 </html>
+
+<style is:global>
+  .rnf-notification-cell__inner {
+    width: initial !important;
+  }
+</style>

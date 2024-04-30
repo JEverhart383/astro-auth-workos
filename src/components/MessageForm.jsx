@@ -16,6 +16,7 @@ function MessageForm() {
         body: JSON.stringify({ data: inputValue }),
       });
       const data = await response.json();
+      setInputValue("");
       console.log("Response:", data);
     } catch (error) {
       console.error("Error:", error);

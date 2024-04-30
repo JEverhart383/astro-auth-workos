@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import { Flex, Heading, Text, Box, TextField } from "@radix-ui/themes";
 import MessageForm from "../components/MessageForm";
+import NotificationInbox from "../components/NotificationInbox";
 //@ts-ignore
 const { session } = Astro.locals;
 if (!session.user) {
@@ -20,12 +21,17 @@ const userFields = [
 ---
 
 <Layout title="Your Account">
-  <Flex direction="column" gap="2" mb="7">
+  <Flex direction="column" mb="7">
     <Heading size="8" align="center"> Inbox </Heading>
     <Text size="5" align="center" color="gray">
       Below are messages associated with your user
     </Text>
   </Flex>
-
+  <NotificationInbox
+    client:idle
+    user={user}
+    apiKey={import.meta.env.KNOCK_PUBLIC_API_KEY}
+    feedId={import.meta.env.KNOCK_FEED_CHANNEL_ID}
+  />
   <MessageForm client:idle />
 </Layout>
